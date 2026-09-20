@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-navy: #0B1026;
+    --color-navy-surface: #111836;
+    --color-blue: #2563EB;
+    --color-violet: #7C3AED;
+    --color-cyan: #06B6D4;
+    --color-light: #F1F5F9;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #F1F5F9;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 50%, #06B6D4 100%);
+}
+
+.brand-gradient-text {
+  background: linear-gradient(135deg, #38BDF8 0%, #818CF8 40%, #C084FC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-border-glow {
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 0 25px -5px rgba(37, 99, 235, 0.15);
+}
+
+.brand-glass-dark {
+  background: rgba(17, 24, 54, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-glass-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
