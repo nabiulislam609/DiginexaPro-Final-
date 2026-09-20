@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Send, CheckCircle2, Sparkles, Shield, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { SERVICES_LIST } from '../data/agencyData';
 import { ConsultationFormData } from '../types';
 
@@ -46,22 +46,19 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
     onClose();
   };
 
+  if (!isOpen) return null;
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/80 backdrop-blur-md"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-2xl rounded-3xl bg-[#0F1635] border border-slate-700 shadow-2xl overflow-hidden my-8"
-          >
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      id="consultation-modal"
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="relative w-full max-w-2xl rounded-3xl bg-[#0F1635] border border-slate-700 shadow-2xl overflow-hidden my-8"
+      >
             
             {/* Header */}
             <div className="p-6 border-b border-slate-800 bg-[#0B1026] flex items-center justify-between">
@@ -262,8 +259,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
             </div>
 
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </div>
   );
 };
