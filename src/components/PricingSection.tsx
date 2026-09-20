@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Check, ArrowRight, Sparkles, Shield, Calculator, HelpCircle } from 'lucide-react';
+import { motion } from 'motion/react';
 import { PRICING_TIERS } from '../data/agencyData';
 
 interface PricingSectionProps {
@@ -36,11 +37,17 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
   };
 
   return (
-    <section className="py-20 sm:py-28 bg-[#0B1026] text-white relative" id="pricing-section">
+    <section className="py-20 sm:py-28 bg-[#0B1026] text-white relative overflow-hidden" id="pricing-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-14 sm:mb-20"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Value-Driven Partnership</span>
@@ -51,14 +58,19 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
             No cookie-cutter packages. Every investment is calibrated directly to your target return, unit economics, and operational capacity.
           </p>
-        </div>
+        </motion.div>
 
         {/* 3 Pricing Tiers Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-16">
-          {PRICING_TIERS.map((tier) => {
+          {PRICING_TIERS.map((tier, idx) => {
             return (
-              <div
+              <motion.div
                 key={tier.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.12 }}
+                whileHover={{ y: -8 }}
                 className={`relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 ${
                   tier.isPopular
                     ? 'bg-[#111836] border-2 border-cyan-400 shadow-2xl shadow-blue-900/40 lg:-translate-y-2'
@@ -132,30 +144,38 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
                 {/* Tier CTA Button */}
                 <div>
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => onOpenConsultation(tier.name)}
-                    className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                    className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
                       tier.isPopular
-                        ? 'brand-gradient text-white shadow-lg shadow-blue-600/30 hover:scale-105 active:scale-95'
+                        ? 'brand-gradient text-white shadow-lg shadow-blue-600/30'
                         : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
                     }`}
                     id={`pricing-cta-${tier.id}`}
                   >
                     <span>{tier.ctaText}</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </motion.button>
                   <p className="text-[11px] text-center text-slate-400 mt-2">
                     Custom roadmap delivered within 48 hours
                   </p>
                 </div>
 
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Interactive Custom Quote Scope Configurator */}
-        <div className="rounded-3xl bg-[#0F1635] border border-slate-800 p-8 sm:p-10 shadow-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="rounded-3xl bg-[#0F1635] border border-slate-800 p-8 sm:p-10 shadow-2xl"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <div className="lg:col-span-7 space-y-4">
@@ -178,7 +198,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                     <button
                       key={opt}
                       onClick={() => toggleChannel(opt)}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border ${
+                      className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border cursor-pointer ${
                         isChecked
                           ? 'bg-blue-600/30 border-cyan-400 text-cyan-300 shadow-sm'
                           : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
@@ -208,17 +228,19 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </div>
               </div>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => onOpenConsultation(`Custom Scope (${selectedChannels.length} Channels)`)}
-                className="w-full py-3.5 rounded-xl brand-gradient text-white text-sm font-bold shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-xl brand-gradient text-white text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Request Custom Quote</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </motion.button>
             </div>
 
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>

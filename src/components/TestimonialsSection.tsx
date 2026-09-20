@@ -1,14 +1,21 @@
 import React from 'react';
 import { Quote, Star, MessageSquare, ShieldAlert } from 'lucide-react';
+import { motion } from 'motion/react';
 import { TESTIMONIALS } from '../data/agencyData';
 
 export const TestimonialsSection: React.FC = () => {
   return (
-    <section className="py-20 sm:py-28 bg-[#0E1430] text-white relative border-y border-slate-800/80" id="testimonials-section">
+    <section className="py-20 sm:py-28 bg-[#0E1430] text-white relative border-y border-slate-800/80 overflow-hidden" id="testimonials-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-14 sm:mb-20"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-4">
             <MessageSquare className="w-3.5 h-3.5" />
             <span>Client Perspectives</span>
@@ -25,14 +32,19 @@ export const TestimonialsSection: React.FC = () => {
             <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
             <span>Clearly labeled placeholder cards — we never fabricate client identities</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Testimonials Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {TESTIMONIALS.map((t) => (
-            <div
+          {TESTIMONIALS.map((t, idx) => (
+            <motion.div
               key={t.id}
-              className="rounded-2xl bg-[#111836] border border-slate-800/90 p-7 flex flex-col justify-between hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-950/60 relative group"
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              whileHover={{ y: -6, borderColor: 'rgba(37, 99, 235, 0.6)' }}
+              className="rounded-2xl bg-[#111836] border border-slate-800/90 p-7 flex flex-col justify-between transition-all duration-300 shadow-lg relative group"
             >
               <div>
                 {/* Rating & Quote Icon */}
@@ -69,7 +81,7 @@ export const TestimonialsSection: React.FC = () => {
                 </div>
               </div>
 
-            </div>
+            </motion.div>
           ))}
         </div>
 

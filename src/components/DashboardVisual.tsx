@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TrendingUp,
-  Search,
   Sparkles,
-  BarChart3,
   Cpu,
   ArrowUpRight,
   Activity,
@@ -11,10 +9,25 @@ import {
   Globe,
   DollarSign
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export const DashboardVisual: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'seo' | 'ads' | 'ai'>('overview');
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d');
+  const [liveEventIndex, setLiveEventIndex] = useState(0);
+
+  const liveEvents = [
+    { text: 'New inbound demo request qualified by AI Chatbot', time: 'Just now', tag: 'Lead' },
+    { text: 'Local SEO citation pack indexed top 3 in Google Maps', time: '3m ago', tag: 'SEO' },
+    { text: 'Meta Video Ad Variant #2 exceeded 4.8x target ROAS', time: '7m ago', tag: 'Ads' },
+    { text: 'E-commerce cart recovery flow triggered +$2,400 sales', time: '14m ago', tag: 'CRO' }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLiveEventIndex((prev) => (prev + 1) % liveEvents.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [liveEvents.length]);
 
   const getMetricData = () => {
     switch (timeRange) {
@@ -75,7 +88,7 @@ export const DashboardVisual: React.FC = () => {
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-cyan-400">
-              <Activity className="w-4 h-4" />
+              <Activity className="w-4 h-4 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -93,54 +106,41 @@ export const DashboardVisual: React.FC = () => {
             </div>
           </div>
 
-          {/* Timeframe Selectors */}
-          <div className="flex items-center p-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
-            {(['7d', '30d', '90d'] as const).map((range) => (
-              <button
-                key={range}
-                onClick={() => setTimeRange(range)}
-                className={`px-2.5 py-1 rounded-md font-medium transition-all ${
-                  timeRange === range
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                {range === '7d' ? '7 Days' : range === '30d' ? '30 Days' : '90 Days'}
-              </button>
-            ))}
+          {/* Timeframe Selectors with layout indicator */}
+          <div className="flex items-center p-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs relative">
+            {(['7d', '30d', '90d'] as const).map((range) => {
+              const active = timeRange === range;
+              return (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`relative px-2.5 py-1 rounded-md font-medium transition-colors z-10 cursor-pointer ${
+                    active ? 'text-white' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {active && (
+                    <motion.div
+                      layoutId="activeTimeframePill"
+                      className="absolute inset-0 bg-blue-600 rounded-md shadow-sm -z-10"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  {range === '7d' ? '7 Days' : range === '30d' ? '30 Days' : '90 Days'}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Channel Navigation Pills */}
-        <div className="flex items-center gap-2 pt-3 pb-4 overflow-x-auto no-scrollbar">
-          {[
-            { id: 'overview', label: 'All Growth Channels', icon: BarChart3 },
-            { id: 'seo', label: 'SEO & Organic Search', icon: Search },
-            { id: 'ads', label: 'Google & Meta Ads', icon: Sparkles },
-            { id: 'ai', label: 'AI Optimization Engine', icon: Cpu }
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const isCurrent = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                  isCurrent
-                    ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-md shadow-blue-500/20'
-                    : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-slate-800'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
         {/* 4 Interactive KPI Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 mb-4">
+          <motion.div
+            key={`rev-${timeRange}`}
+            initial={{ scale: 0.96, opacity: 0.8 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors"
+          >
             <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
               <span>Attributed Revenue</span>
               <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
@@ -153,9 +153,15 @@ export const DashboardVisual: React.FC = () => {
               <span>{metrics.revChange}</span>
               <span className="text-slate-500 font-normal">vs prev</span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors">
+          <motion.div
+            key={`traffic-${timeRange}`}
+            initial={{ scale: 0.96, opacity: 0.8 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors"
+          >
             <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
               <span>Website Traffic</span>
               <Globe className="w-3.5 h-3.5 text-cyan-400" />
@@ -168,9 +174,15 @@ export const DashboardVisual: React.FC = () => {
               <span>{metrics.trafficChange}</span>
               <span className="text-slate-500 font-normal">organic</span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors">
+          <motion.div
+            key={`roas-${timeRange}`}
+            initial={{ scale: 0.96, opacity: 0.8 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors"
+          >
             <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
               <span>Blended ROAS</span>
               <Sparkles className="w-3.5 h-3.5 text-purple-400" />
@@ -183,9 +195,15 @@ export const DashboardVisual: React.FC = () => {
               <span>{metrics.roasChange}</span>
               <span className="text-slate-500 font-normal">target 3.0x</span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors">
+          <motion.div
+            key={`ai-${timeRange}`}
+            initial={{ scale: 0.96, opacity: 0.8 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors"
+          >
             <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
               <span>AI Opt Score</span>
               <Zap className="w-3.5 h-3.5 text-amber-400" />
@@ -196,7 +214,7 @@ export const DashboardVisual: React.FC = () => {
             <div className="text-[11px] text-amber-300/90 font-medium truncate mt-0.5">
               {metrics.aiStatus}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Main Growth Graph Area */}
@@ -215,7 +233,7 @@ export const DashboardVisual: React.FC = () => {
             <span className="text-slate-500 text-[11px]">Compounding Growth Trajectory</span>
           </div>
 
-          {/* Dynamic SVG Area Chart */}
+          {/* Dynamic SVG Area Chart with smooth animation */}
           <div className="h-32 sm:h-40 w-full relative">
             <svg
               className="w-full h-full overflow-visible"
@@ -242,6 +260,7 @@ export const DashboardVisual: React.FC = () => {
               <polygon
                 points={`0,100 ${chartPoints} 100,100`}
                 fill="url(#cyanGradient)"
+                className="transition-all duration-700 ease-in-out"
               />
 
               {/* Main Cyan Line */}
@@ -252,6 +271,7 @@ export const DashboardVisual: React.FC = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 points={chartPoints}
+                className="transition-all duration-700 ease-in-out"
               />
 
               {/* Purple Secondary Line */}
@@ -265,10 +285,14 @@ export const DashboardVisual: React.FC = () => {
             </svg>
 
             {/* Floating Highlight Badge on Graph Peak */}
-            <div className="absolute top-2 right-2 sm:right-6 bg-slate-900/90 border border-cyan-500/40 rounded-lg px-2.5 py-1 text-[11px] shadow-lg flex items-center gap-1.5 text-cyan-300">
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute top-2 right-2 sm:right-6 bg-slate-900/90 border border-cyan-500/40 rounded-lg px-2.5 py-1 text-[11px] shadow-lg flex items-center gap-1.5 text-cyan-300"
+            >
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
               <span>+284% Accelerated Peak</span>
-            </div>
+            </motion.div>
           </div>
 
           <div className="flex justify-between text-[10px] text-slate-500 mt-2 px-1">
@@ -280,10 +304,35 @@ export const DashboardVisual: React.FC = () => {
           </div>
         </div>
 
+        {/* Live Activity Event Pulse Bar */}
+        <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/90 border border-slate-800/90 text-xs mb-3">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping shrink-0" />
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-semibold shrink-0">
+              {liveEvents[liveEventIndex].tag}
+            </span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={liveEventIndex}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="text-slate-300 truncate text-[11px]"
+              >
+                {liveEvents[liveEventIndex].text}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+          <span className="text-[10px] text-slate-500 shrink-0 ml-2 font-mono">
+            {liveEvents[liveEventIndex].time}
+          </span>
+        </div>
+
         {/* AI Insight Pill */}
         <div className="flex items-start gap-3 p-3 rounded-xl bg-gradient-to-r from-blue-950/60 to-purple-950/60 border border-blue-800/40">
-          <div className="p-1.5 rounded-lg bg-blue-600/30 text-cyan-400 mt-0.5">
-            <Cpu className="w-4 h-4 animate-spin-slow" />
+          <div className="p-1.5 rounded-lg bg-blue-600/30 text-cyan-400 mt-0.5 shrink-0">
+            <Cpu className="w-4 h-4 animate-spin" style={{ animationDuration: '8s' }} />
           </div>
           <div className="text-xs">
             <div className="flex items-center gap-2">
@@ -291,13 +340,7 @@ export const DashboardVisual: React.FC = () => {
               <span className="text-[10px] text-cyan-400 font-mono">Confidence: 96%</span>
             </div>
             <p className="text-slate-400 mt-0.5 text-[11px]">
-              {activeTab === 'seo'
-                ? 'High-intent localized keywords in Dhaka & Chittagong show +45% lower keyword difficulty. Deploying localized topic clusters will yield estimated +60% organic conversions.'
-                : activeTab === 'ads'
-                ? 'Meta ad creative #4 has 4.8x ROAS. Shifted 22% of daily budget from low-performing carousel to video hook variant #4.'
-                : activeTab === 'ai'
-                ? 'Automated WhatsApp & Messenger response latency under 35 seconds lifted qualification conversion rate by +31%.'
-                : 'Blended acquisition funnel reached optimal unit economics. Recommended next step: scale paid ad budgets horizontally while organic SEO compound kicks in.'}
+              Blended acquisition funnel reached optimal unit economics. Recommended next step: scale paid ad budgets horizontally while organic SEO compound kicks in.
             </p>
           </div>
         </div>

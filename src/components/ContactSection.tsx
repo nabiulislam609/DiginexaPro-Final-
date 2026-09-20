@@ -14,6 +14,7 @@ import {
   Instagram,
   Youtube
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { BRAND_INFO, SERVICES_LIST } from '../data/agencyData';
 import { ConsultationFormData } from '../types';
 
@@ -44,11 +45,17 @@ export const ContactSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 sm:py-28 bg-[#0B1026] text-white relative" id="contact-section">
+    <section className="py-20 sm:py-28 bg-[#0B1026] text-white relative overflow-hidden" id="contact-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-14 sm:mb-20"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Connect With Our Team</span>
@@ -59,13 +66,19 @@ export const ContactSection: React.FC = () => {
           <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
             Tell us about your business, your goals and where you want to go.
           </p>
-        </div>
+        </motion.div>
 
         {/* 2-Column Contact Container */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
           {/* Left Column: Direct Agency Information & Service Footprint */}
-          <div className="lg:col-span-5 space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5 space-y-8"
+          >
             <div className="rounded-3xl bg-[#0F1635] border border-slate-800 p-6 sm:p-8 space-y-6">
               <h3 className="text-xl font-bold text-white font-['Outfit']">
                 Agency Headquarters & Contact
@@ -136,7 +149,9 @@ export const ContactSection: React.FC = () => {
                   Connect on Social Media
                 </span>
                 <div className="flex items-center gap-2.5">
-                  <a
+                  <motion.a
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     href={BRAND_INFO.socialLinks.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -144,8 +159,10 @@ export const ContactSection: React.FC = () => {
                     aria-label="DigiNexa Facebook"
                   >
                     <Facebook className="w-4 h-4" />
-                  </a>
-                  <a
+                  </motion.a>
+                  <motion.a
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     href={BRAND_INFO.socialLinks.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -153,8 +170,10 @@ export const ContactSection: React.FC = () => {
                     aria-label="DigiNexa LinkedIn"
                   >
                     <Linkedin className="w-4 h-4" />
-                  </a>
-                  <a
+                  </motion.a>
+                  <motion.a
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     href={BRAND_INFO.socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -162,8 +181,10 @@ export const ContactSection: React.FC = () => {
                     aria-label="DigiNexa Instagram"
                   >
                     <Instagram className="w-4 h-4" />
-                  </a>
-                  <a
+                  </motion.a>
+                  <motion.a
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     href={BRAND_INFO.socialLinks.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -171,7 +192,7 @@ export const ContactSection: React.FC = () => {
                     aria-label="DigiNexa YouTube"
                   >
                     <Youtube className="w-4 h-4" />
-                  </a>
+                  </motion.a>
                 </div>
               </div>
 
@@ -187,10 +208,16 @@ export const ContactSection: React.FC = () => {
                 Every submission is reviewed personally by a senior strategist. We will provide a competitive audit and scheduled 30-minute roadmap review.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Professional Lead Generation Form */}
-          <div className="lg:col-span-7">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7"
+          >
             <div className="rounded-3xl bg-[#0F1635] border border-slate-800 p-6 sm:p-10 shadow-2xl">
               {submitted ? (
                 <div className="py-12 text-center space-y-4 animate-in zoom-in-95 duration-200">
@@ -217,7 +244,7 @@ export const ContactSection: React.FC = () => {
                         message: ''
                       });
                     }}
-                    className="mt-6 px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300"
+                    className="mt-6 px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 cursor-pointer"
                   >
                     Submit Another Inquiry
                   </button>
@@ -236,7 +263,7 @@ export const ContactSection: React.FC = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Tanvir Ahmed"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                       />
                     </div>
 
@@ -251,7 +278,7 @@ export const ContactSection: React.FC = () => {
                         value={formData.businessName}
                         onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
                         placeholder="e.g. Apex Lifestyle Ltd"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                       />
                     </div>
                   </div>
@@ -268,7 +295,7 @@ export const ContactSection: React.FC = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="tanvir@company.com"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                       />
                     </div>
 
@@ -283,7 +310,7 @@ export const ContactSection: React.FC = () => {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+880 17XX-XXXXXX"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                       />
                     </div>
                   </div>
@@ -298,7 +325,7 @@ export const ContactSection: React.FC = () => {
                       value={formData.website}
                       onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                       placeholder="https://yourwebsite.com or facebook.com/page"
-                      className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                     />
                   </div>
 
@@ -311,7 +338,7 @@ export const ContactSection: React.FC = () => {
                       <select
                         value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-cyan-400"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
                       >
                         <option value="All-in-One Growth Solutions">All-in-One Growth Solutions</option>
                         {SERVICES_LIST.map((s) => (
@@ -330,7 +357,7 @@ export const ContactSection: React.FC = () => {
                       <select
                         value={formData.budget}
                         onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-cyan-400"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
                       >
                         <option value="Under $1,000 / mo">Under $1,000 / mo</option>
                         <option value="$1,000 - $3,000 / month">$1,000 - $3,000 / month</option>
@@ -351,15 +378,17 @@ export const ContactSection: React.FC = () => {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="What is your biggest bottleneck right now? (e.g., high ad costs, poor website conversions, need local map dominance, wanting to scale internationally)"
-                      className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                     ></textarea>
                   </div>
 
                   {/* Submit Button */}
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                     type="submit"
                     disabled={loading}
-                    className="w-full py-4 rounded-xl brand-gradient text-white text-base font-bold shadow-xl shadow-blue-600/30 hover:shadow-cyan-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+                    className="w-full py-4 rounded-xl brand-gradient text-white text-base font-bold shadow-xl shadow-blue-600/30 hover:shadow-cyan-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     id="contact-submit-btn"
                   >
                     {loading ? (
@@ -373,7 +402,7 @@ export const ContactSection: React.FC = () => {
                         <Send className="w-4 h-4" />
                       </span>
                     )}
-                  </button>
+                  </motion.button>
 
                   <div className="text-center text-[11px] text-slate-400 pt-1">
                     Your details are 100% confidential. No spam, ever.
@@ -381,7 +410,7 @@ export const ContactSection: React.FC = () => {
                 </form>
               )}
             </div>
-          </div>
+          </motion.div>
 
         </div>
 

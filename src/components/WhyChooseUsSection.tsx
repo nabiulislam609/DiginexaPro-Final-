@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   ArrowRight
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { WHY_CHOOSE_US } from '../data/agencyData';
 
 interface WhyChooseUsSectionProps {
@@ -38,11 +39,17 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
   };
 
   return (
-    <section className="py-20 sm:py-28 bg-[#F8FAFC] text-slate-900 relative" id="why-choose-us-section">
+    <section className="py-20 sm:py-28 bg-[#F8FAFC] text-slate-900 relative overflow-hidden" id="why-choose-us-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-14 sm:mb-20"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 border border-blue-200 text-xs font-bold text-blue-800 uppercase tracking-wider mb-4">
             <span>The DigiNexa Distinction</span>
           </div>
@@ -52,14 +59,19 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
           <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
             We reject lazy, copy-paste agency retainers. Here is why high-growth startups, ambitious local brands, and international enterprises trust DigiNexa to drive real business growth.
           </p>
-        </div>
+        </motion.div>
 
         {/* 6 Benefits Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {WHY_CHOOSE_US.map((item, index) => (
-            <div
+            <motion.div
               key={item.id}
-              className="relative rounded-2xl bg-white border border-slate-200/90 p-8 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between group"
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              whileHover={{ y: -8 }}
+              className="relative rounded-2xl bg-white border border-slate-200/90 p-8 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between group"
             >
               <div>
                 {/* Icon & Index */}
@@ -88,12 +100,18 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 <span>Rigorous Quality Standard</span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Comparison Callout Card */}
-        <div className="mt-16 rounded-2xl bg-slate-900 text-white p-8 sm:p-10 shadow-2xl relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 rounded-2xl bg-slate-900 text-white p-8 sm:p-10 shadow-2xl relative overflow-hidden"
+        >
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-3 text-left">
               <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
@@ -107,19 +125,21 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
               </p>
             </div>
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-center">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onOpenConsultation}
-                className="px-6 py-3.5 rounded-xl brand-gradient text-white text-sm font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all text-center flex items-center justify-center gap-2"
+                className="px-6 py-3.5 rounded-xl brand-gradient text-white text-sm font-semibold shadow-lg transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Book a Strategy Call</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </motion.button>
               <span className="text-[11px] text-center text-slate-400">
                 100% Free • No Obligation Growth Audit
               </span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>
